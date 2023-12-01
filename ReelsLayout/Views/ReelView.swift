@@ -16,6 +16,7 @@ struct ReelView: View {
     //View props
     @State private var player: AVPlayer?
     @State private var looper: AVPlayerLooper?
+    @State private var isPlay: Bool = false
     
     var body: some View {
         GeometryReader{
@@ -44,6 +45,16 @@ struct ReelView: View {
                     }
                     //like this reel
                     reel.isLike = true
+                }
+                .onTapGesture(count: 1) {
+                    self.isPlay.toggle()
+                }
+                .onChange(of: isPlay){ oldValue, newValue in
+                    if newValue{
+                        player?.pause()
+                    }else{
+                        player?.play()
+                    }
                 }
                 .onAppear{
                     guard player == nil else { return }
